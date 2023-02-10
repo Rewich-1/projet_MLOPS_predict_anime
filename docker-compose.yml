@@ -1,0 +1,10 @@
+version: '3'
+services:
+  back:
+    image: back_end
+    volumes:
+      - C:/Users/Glueg/Documents/GitHub/projet_MLOPS_predict_anime/back/models:/usr/app/models
+    environment:
+      PATH_TO_MODELS: C:/Users/Glueg/Documents/GitHub/projet_MLOPS_predict_anime/back/models
+    ports:
+      - "5000:5000"
