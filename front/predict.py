@@ -10,10 +10,10 @@ import requests
 
 
 def requests_api(variable):
-    #URL = 'http://127.0.0.1:5000/classify'
-    #result = requests.post(URL, json.dumps(variable))
-    #print("Prediction = " + str({result.text}))
-    rating = random.randint(20, 80)
+    URL = 'http://127.0.0.1:5000/predict_rating'
+    rating = requests.post(URL, json.dumps(variable))
+    print("Prediction = " + str({rating.text}))
+    #rating = random.randint(20, 80)
     return rating
 
 
@@ -32,6 +32,13 @@ def page_predict():
     with open("../data/list_studio", "r") as fp:
         list_studio = json.load(fp)
 
+    with open("../data/site_to_api", "r") as fp:
+        site_to_api = json.load(fp)
+    site_to_api = str(site_to_api)
+    site_to_api = site_to_api.replace(" ", "").replace('"', "").replace("[", "").replace("]", "").replace("'", "")
+    site_to_api = list(site_to_api.split(","))
+
+
     st.header('predict rating of your anime')
     with st.expander("search"):
         predict_title = st.text_input(value="", label="predict_Title")
@@ -46,58 +53,76 @@ def page_predict():
             predict_Studio = st.multiselect(label="predict_studio", options=list_studio)
         predict_Description = st.text_area(label="predict_Description")
 
-    variable = {"Title": predict_title, "Genre": predict_Genre, "Description": predict_Description, "Type": type, "producer": predict_producer,
+    variable = {"Title": predict_title, "Genre": predict_Genre, "Description": predict_Description, "Type": predict_type, "producer": predict_producer,
                 "Studio": predict_Studio}
 
-    with st.spinner('Wait for it...'):
-        time.sleep(2)
-        rating_predict = requests_api(variable)
+    #with st.spinner('Wait for it...'):
+    #   time.sleep(2)
+    #   rating_predict = requests_api(variable)
 
 
     st.header('result')
 
+    #st.write(variable)
+    #st.write(site_to_api)
 
-    my_bar = st.progress(50)
+    list_api = [0] * len(site_to_api)
 
-    time.sleep(1)
-    my_bar.progress(rating_predict+20)
+    for key, value  in variable.items():
+        #st.write(value)
+        for i in value:
+            if i in site_to_api:
+                st.write(i)
+                st.write(site_to_api.index(i))
+                list_api[site_to_api.index(i)] = 1
 
-    time.sleep(1)
-    my_bar.progress(rating_predict - 20)
+    rating_predict = requests_api(list_api)
 
-    time.sleep(1)
-    my_bar.progress(rating_predict)
 
-    color = {
-        "red": 0,
-        "green": 0,
-        "blue": 60,
-    }
 
-    if rating_predict < 50:
-        color["red"] = 255 - int(rating_predict * 2)
-        color["green"] = int(255-50+rating_predict * 2)
-    else:
-        color["red"] = 255 - int(rating_predict * 2.55)
-        color["green"] = int(rating_predict * 2.55)
 
-    st.markdown("""
-               <style>
-               .stProgress .st-ep {
-                   background-color: rgb("""+str(color['red'])+""", """+str(color['green'])+""", """+str(color['blue'])+""")
-               }
-               </style>
-               """, unsafe_allow_html=True)
 
-    col1, col2, col3 = st.columns(3)
+    #my_bar = st.progress(50)
 
-    st.balloons()
-    with col1:
-        st.markdown("<h1 style='text-align: center'>💯</h1>", unsafe_allow_html=True)
-    with col2:
-        st.header('your anime have rating of  :'+ str(rating_predict/10))
-    with col3:
-        st.markdown("<h1 style='text-align: center'>💯</h1>", unsafe_allow_html=True)
+    #time.sleep(1)
+    #my_bar.progress(rating_predict+20)
+
+    # time.sleep(1)
+    #my_bar.progress(rating_predict - 20)
+
+    #time.sleep(1)
+    # my_bar.progress(rating_predict)
+
+    # color = {
+    #    "red": 0,
+    #    "green": 0,
+    #     "blue": 60,
+    # }
+
+    # if rating_predict < 50:
+    #     color["red"] = 255 - int(rating_predict * 2)
+    #     color["green"] = int(255-50+rating_predict * 2)
+    # else:
+    #    color["red"] = 255 - int(rating_predict * 2.55)
+    #    color["green"] = int(rating_predict * 2.55)
+
+    # st.markdown("""
+    #           <style>
+    #           .stProgress .st-ep {
+    #              background-color: rgb("""+str(color['red'])+""", """+str(color['green'])+""", """+str(color['blue'])+""")
+    #          }
+    #          </style>
+    #         """, unsafe_allow_html=True)
+
+    # col1, col2, col3 = st.columns(3)
+
+    # st.balloons()
+    # with col1:
+    #     st.markdown("<h1 style='text-align: center'>💯</h1>", unsafe_allow_html=True)
+    # with col2:
+    #    st.header('your anime have rating of  :'+ str(rating_predict/10))
+    # with col3:
+    #    st.markdown("<h1 style='text-align: center'>💯</h1>", unsafe_allow_html=True)
 
 
     #st.dataframe(df)
