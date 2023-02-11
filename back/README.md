@@ -1,4 +1,4 @@
-How to use the back-end:
+How to use the back-end as a standalone application (for testing purposes)):
 
 Use the following commands :
 - First we build the docker image
