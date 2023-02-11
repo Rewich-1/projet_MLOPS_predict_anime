@@ -1,6 +1,7 @@
 from flask import Flask, request, jsonify
 from tensorflow import keras
 import numpy as np
+import json
 
 app = Flask(__name__)
 
@@ -21,8 +22,10 @@ model = keras.models.load_model('./models/model.h5')
 # -- Route for getting a prediction --
 @app.route('/predict_rating', methods=['POST'])
 def predict():
-    data = np.array(request.get_json(force=True)['data']).astype("float32")
-    return {"prediction": model.predict(data)}
+    data = np.array(request.get_json(force=True)).astype("float32")
+    data = data.reshape(1, -1)
+    prediction = model.predict(data)
+    return json.dumps(str(prediction[0][0]))
 
 # -- Let's start the App --
 if __name__ == '__main__':
