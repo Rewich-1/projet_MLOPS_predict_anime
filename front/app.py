@@ -5,8 +5,8 @@ import json
 import time
 from streamlit_cookies_manager import EncryptedCookieManager
 import os
-from search import page_search
 
+from search import page_search
 from predict import page_predict
 
 st.title('perfect anime')
@@ -21,29 +21,3 @@ with tab2:
 
 with tab3:
     st.header('documentation')
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

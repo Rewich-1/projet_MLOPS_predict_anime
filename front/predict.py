@@ -18,21 +18,21 @@ def requests_api(variable):
 
 
 def page_predict():
-    df = pd.read_csv("../data/Anime_data.csv")
+    df = pd.read_csv("./data/Anime_data.csv")
 
-    with open("../data/list_genre", "r") as fp:
+    with open("./data/list_genre", "r") as fp:
         list_genre = json.load(fp)
 
-    with open("../data/list_type", "r") as fp:
+    with open("./data/list_type", "r") as fp:
         list_type = json.load(fp)
 
-    with open("../data/list_producer", "r") as fp:
+    with open("./data/list_producer", "r") as fp:
         list_producer = json.load(fp)
 
-    with open("../data/list_studio", "r") as fp:
+    with open("./data/list_studio", "r") as fp:
         list_studio = json.load(fp)
 
-    with open("../data/site_to_api", "r") as fp:
+    with open("./data/site_to_api", "r") as fp:
         site_to_api = json.load(fp)
     site_to_api = str(site_to_api)
     site_to_api = site_to_api.replace(" ", "").replace('"', "").replace("[", "").replace("]", "").replace("'", "")
@@ -77,10 +77,6 @@ def page_predict():
                 list_api[site_to_api.index(i)] = 1
 
     rating_predict = requests_api(list_api)
-
-
-
-
 
     #my_bar = st.progress(50)
 
