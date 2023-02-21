@@ -76,53 +76,49 @@ def page_predict():
                 st.write(site_to_api.index(i))
                 list_api[site_to_api.index(i)] = 1
 
-    rating_predict = requests_api(list_api)
+    response = requests_api(list_api)
+    rating_predict = float(response.json())
+    my_bar = st.progress(50)
+
+    time.sleep(1)
+    my_bar.progress(rating_predict+20)
+
+    time.sleep(1)
+    my_bar.progress(rating_predict - 20)
+
+    time.sleep(1)
+    my_bar.progress(rating_predict)
+
+    color = {
+       "red": 0,
+       "green": 0,
+        "blue": 60,
+    }
+
+    if rating_predict < 50:
+        color["red"] = 255 - int(rating_predict * 2)
+        color["green"] = int(255-50+rating_predict * 2)
+    else:
+       color["red"] = 255 - int(rating_predict * 2.55)
+       color["green"] = int(rating_predict * 2.55)
+
+    st.markdown("""
+              <style>
+              .stProgress .st-ep {
+                 background-color: rgb("""+str(color['red'])+""", """+str(color['green'])+""", """+str(color['blue'])+""")
+             }
+             </style>
+            """, unsafe_allow_html=True)
+
+    col1, col2, col3 = st.columns(3)
+
+    st.balloons()
+    with col1:
+        st.markdown("<h1 style='text-align: center'>💯</h1>", unsafe_allow_html=True)
+    with col2:
+       st.header('your anime have rating of  :'+ str(rating_predict/10))
+    with col3:
+       st.markdown("<h1 style='text-align: center'>💯</h1>", unsafe_allow_html=True)
 
 
-
-
-
-    #my_bar = st.progress(50)
-
-    #time.sleep(1)
-    #my_bar.progress(rating_predict+20)
-
-    # time.sleep(1)
-    #my_bar.progress(rating_predict - 20)
-
-    #time.sleep(1)
-    # my_bar.progress(rating_predict)
-
-    # color = {
-    #    "red": 0,
-    #    "green": 0,
-    #     "blue": 60,
-    # }
-
-    # if rating_predict < 50:
-    #     color["red"] = 255 - int(rating_predict * 2)
-    #     color["green"] = int(255-50+rating_predict * 2)
-    # else:
-    #    color["red"] = 255 - int(rating_predict * 2.55)
-    #    color["green"] = int(rating_predict * 2.55)
-
-    # st.markdown("""
-    #           <style>
-    #           .stProgress .st-ep {
-    #              background-color: rgb("""+str(color['red'])+""", """+str(color['green'])+""", """+str(color['blue'])+""")
-    #          }
-    #          </style>
-    #         """, unsafe_allow_html=True)
-
-    # col1, col2, col3 = st.columns(3)
-
-    # st.balloons()
-    # with col1:
-    #     st.markdown("<h1 style='text-align: center'>💯</h1>", unsafe_allow_html=True)
-    # with col2:
-    #    st.header('your anime have rating of  :'+ str(rating_predict/10))
-    # with col3:
-    #    st.markdown("<h1 style='text-align: center'>💯</h1>", unsafe_allow_html=True)
-
-
-    #st.dataframe(df)
+    st.dataframe(df)
