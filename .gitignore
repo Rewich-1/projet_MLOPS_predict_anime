@@ -1,3 +1,7 @@
+<<<<<<< HEAD
 back/models/*.h5
 back/__pycache__
 front/__pycache__
+=======
+./back/models/*.h5
+>>>>>>> 39cfc199f971f435c468ee9a0d71bc841ee2084b

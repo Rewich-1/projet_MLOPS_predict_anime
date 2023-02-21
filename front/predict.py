@@ -18,21 +18,21 @@ def requests_api(variable):
 
 
 def page_predict():
-    df = pd.read_csv("../data/Anime_data.csv")
+    df = pd.read_csv("./data/Anime_data.csv")
 
-    with open("../data/list_genre", "r") as fp:
+    with open("./data/list_genre", "r") as fp:
         list_genre = json.load(fp)
 
-    with open("../data/list_type", "r") as fp:
+    with open("./data/list_type", "r") as fp:
         list_type = json.load(fp)
 
-    with open("../data/list_producer", "r") as fp:
+    with open("./data/list_producer", "r") as fp:
         list_producer = json.load(fp)
 
-    with open("../data/list_studio", "r") as fp:
+    with open("./data/list_studio", "r") as fp:
         list_studio = json.load(fp)
 
-    with open("../data/site_to_api", "r") as fp:
+    with open("./data/site_to_api", "r") as fp:
         site_to_api = json.load(fp)
     site_to_api = str(site_to_api)
     site_to_api = site_to_api.replace(" ", "").replace('"', "").replace("[", "").replace("]", "").replace("'", "")
@@ -120,5 +120,52 @@ def page_predict():
     with col3:
        st.markdown("<h1 style='text-align: center'>💯</h1>", unsafe_allow_html=True)
 
+<<<<<<< HEAD
 
     st.dataframe(df)
+=======
+    #my_bar = st.progress(50)
+
+    #time.sleep(1)
+    #my_bar.progress(rating_predict+20)
+
+    # time.sleep(1)
+    #my_bar.progress(rating_predict - 20)
+
+    #time.sleep(1)
+    # my_bar.progress(rating_predict)
+
+    # color = {
+    #    "red": 0,
+    #    "green": 0,
+    #     "blue": 60,
+    # }
+
+    # if rating_predict < 50:
+    #     color["red"] = 255 - int(rating_predict * 2)
+    #     color["green"] = int(255-50+rating_predict * 2)
+    # else:
+    #    color["red"] = 255 - int(rating_predict * 2.55)
+    #    color["green"] = int(rating_predict * 2.55)
+
+    # st.markdown("""
+    #           <style>
+    #           .stProgress .st-ep {
+    #              background-color: rgb("""+str(color['red'])+""", """+str(color['green'])+""", """+str(color['blue'])+""")
+    #          }
+    #          </style>
+    #         """, unsafe_allow_html=True)
+
+    # col1, col2, col3 = st.columns(3)
+
+    # st.balloons()
+    # with col1:
+    #     st.markdown("<h1 style='text-align: center'>💯</h1>", unsafe_allow_html=True)
+    # with col2:
+    #    st.header('your anime have rating of  :'+ str(rating_predict/10))
+    # with col3:
+    #    st.markdown("<h1 style='text-align: center'>💯</h1>", unsafe_allow_html=True)
+
+
+    #st.dataframe(df)
+>>>>>>> 39cfc199f971f435c468ee9a0d71bc841ee2084b

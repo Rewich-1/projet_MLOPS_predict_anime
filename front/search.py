@@ -18,18 +18,18 @@ def search(df,variable):
 
 
 def page_search():
-    df = pd.read_csv("../data/Anime_data.csv")
+    df = pd.read_csv("./data/Anime_data.csv")
 
-    with open("../data/list_genre", "r") as fp:
+    with open("./data/list_genre", "r") as fp:
         list_genre = json.load(fp)
 
-    with open("../data/list_type", "r") as fp:
+    with open("./data/list_type", "r") as fp:
         list_type = json.load(fp)
 
-    with open("../data/list_producer", "r") as fp:
+    with open("./data/list_producer", "r") as fp:
         list_producer = json.load(fp)
 
-    with open("../data/list_studio", "r") as fp:
+    with open("./data/list_studio", "r") as fp:
         list_studio = json.load(fp)
 
     st.header('anime')
