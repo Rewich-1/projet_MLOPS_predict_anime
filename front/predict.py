@@ -10,14 +10,20 @@ import requests
 
 
 def requests_api(variable):
-    URL = 'http://127.0.0.1:5000/predict_rating'
-    rating = requests.post(URL, json.dumps(variable))
-    print("Prediction = " + str({rating.text}))
-    #rating = random.randint(20, 80)
+    try :
+        URL = 'http://back:5000/predict_rating'
+        rating = requests.post(URL, json.dumps(variable))
+        print("Prediction = " + str({rating.text}))
+        rating = float(rating.text)
+    except:
+        rating = 0
     return rating
 
 
 def page_predict():
+
+    st.warning('We are experiencing exceptionally high demand. Please hang tight as we work on scaling our systems.', icon="⚠️")
+
     df = pd.read_csv("../data/Anime_data.csv")
 
     with open("../data/list_genre", "r") as fp:
@@ -56,20 +62,11 @@ def page_predict():
     variable = {"Title": predict_title, "Genre": predict_Genre, "Description": predict_Description, "Type": predict_type, "producer": predict_producer,
                 "Studio": predict_Studio}
 
-    #with st.spinner('Wait for it...'):
-    #   time.sleep(2)
-    #   rating_predict = requests_api(variable)
 
-
-    st.header('result')
-
-    #st.write(variable)
-    #st.write(site_to_api)
 
     list_api = [0] * len(site_to_api)
 
     for key, value  in variable.items():
-        #st.write(value)
         for i in value:
             if i in site_to_api:
                 st.write(i)
@@ -78,51 +75,51 @@ def page_predict():
 
     rating_predict = requests_api(list_api)
 
+    if rating_predict == 0:
+        st.error('api not work', icon="🚨")
+    else:
 
+        st.header('result')
 
+        my_bar = st.progress(50)
 
+        time.sleep(1)
+        my_bar.progress(rating_predict+20)
 
-    #my_bar = st.progress(50)
+        time.sleep(1)
+        my_bar.progress(rating_predict - 20)
 
-    #time.sleep(1)
-    #my_bar.progress(rating_predict+20)
+        time.sleep(1)
+        my_bar.progress(rating_predict)
 
-    # time.sleep(1)
-    #my_bar.progress(rating_predict - 20)
+        color = {
+           "red": 0,
+           "green": 0,
+            "blue": 60,
+        }
 
-    #time.sleep(1)
-    # my_bar.progress(rating_predict)
+        if rating_predict < 50:
+            color["red"] = 255 - int(rating_predict * 2)
+            color["green"] = int(255-50+rating_predict * 2)
+        else:
+           color["red"] = 255 - int(rating_predict * 2.55)
+           color["green"] = int(rating_predict * 2.55)
 
-    # color = {
-    #    "red": 0,
-    #    "green": 0,
-    #     "blue": 60,
-    # }
+        st.markdown("""
+                  <style>
+                  .stProgress .st-ep {
+                     background-color: rgb("""+str(color['red'])+""", """+str(color['green'])+""", """+str(color['blue'])+""")
+                 }
+                 </style>
+                """, unsafe_allow_html=True)
 
-    # if rating_predict < 50:
-    #     color["red"] = 255 - int(rating_predict * 2)
-    #     color["green"] = int(255-50+rating_predict * 2)
-    # else:
-    #    color["red"] = 255 - int(rating_predict * 2.55)
-    #    color["green"] = int(rating_predict * 2.55)
+        col1, col2, col3 = st.columns(3)
 
-    # st.markdown("""
-    #           <style>
-    #           .stProgress .st-ep {
-    #              background-color: rgb("""+str(color['red'])+""", """+str(color['green'])+""", """+str(color['blue'])+""")
-    #          }
-    #          </style>
-    #         """, unsafe_allow_html=True)
+        st.balloons()
+        with col1:
+            st.markdown("<h1 style='text-align: center'>💯</h1>", unsafe_allow_html=True)
+        with col2:
+           st.header('your anime have rating of  :'+ str(rating_predict/10))
+        with col3:
+           st.markdown("<h1 style='text-align: center'>💯</h1>", unsafe_allow_html=True)
 
-    # col1, col2, col3 = st.columns(3)
-
-    # st.balloons()
-    # with col1:
-    #     st.markdown("<h1 style='text-align: center'>💯</h1>", unsafe_allow_html=True)
-    # with col2:
-    #    st.header('your anime have rating of  :'+ str(rating_predict/10))
-    # with col3:
-    #    st.markdown("<h1 style='text-align: center'>💯</h1>", unsafe_allow_html=True)
-
-
-    #st.dataframe(df)
