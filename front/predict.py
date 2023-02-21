@@ -24,21 +24,21 @@ def page_predict():
 
     st.warning('We are experiencing exceptionally high demand. Please hang tight as we work on scaling our systems.', icon="⚠️")
 
-    df = pd.read_csv("../data/Anime_data.csv")
+    df = pd.read_csv("./data/Anime_data.csv")
 
-    with open("../data/list_genre", "r") as fp:
+    with open("./data/list_genre", "r") as fp:
         list_genre = json.load(fp)
 
-    with open("../data/list_type", "r") as fp:
+    with open("./data/list_type", "r") as fp:
         list_type = json.load(fp)
 
-    with open("../data/list_producer", "r") as fp:
+    with open("./data/list_producer", "r") as fp:
         list_producer = json.load(fp)
 
-    with open("../data/list_studio", "r") as fp:
+    with open("./data/list_studio", "r") as fp:
         list_studio = json.load(fp)
 
-    with open("../data/site_to_api", "r") as fp:
+    with open("./data/site_to_api", "r") as fp:
         site_to_api = json.load(fp)
     site_to_api = str(site_to_api)
     site_to_api = site_to_api.replace(" ", "").replace('"', "").replace("[", "").replace("]", "").replace("'", "")
@@ -122,4 +122,3 @@ def page_predict():
            st.header('your anime have rating of  :'+ str(rating_predict/10))
         with col3:
            st.markdown("<h1 style='text-align: center'>💯</h1>", unsafe_allow_html=True)
-
