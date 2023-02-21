@@ -23,8 +23,11 @@ model = keras.models.load_model('./models/model.h5')
 @app.route('/predict_rating', methods=['POST'])
 def predict():
     data = np.array(request.get_json(force=True)).astype("float32")
+    print("AAAAAAAAA HERE")
+    print(data)
     data = data.reshape(1, -1)
     prediction = model.predict(data)
+    print(prediction)
     return json.dumps(str(prediction[0][0]))
 
 # -- Let's start the App --

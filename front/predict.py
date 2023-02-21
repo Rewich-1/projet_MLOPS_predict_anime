@@ -7,30 +7,72 @@ from streamlit_cookies_manager import EncryptedCookieManager
 import os
 import random
 import requests
+import math
+from sentence_transformers import SentenceTransformer
+sbert = SentenceTransformer ('distilbert-base-nli-mean-tokens')
+
+with open("../data/list_genre", "r") as fp:
+    list_genre = json.load(fp)
+with open("../data/list_type", "r") as fp:
+    list_type = json.load(fp)
+
+with open("../data/list_producer", "r") as fp:
+    list_producer = json.load(fp)
+
+with open("../data/list_studio", "r") as fp:
+    list_studio = json.load(fp)
+
+def preprocess(variable):
+    global list_genre, list_type, list_producer, list_studio
+    def dummies_normalized(col,listt):
+        l = []
+        for g in sorted(listt):
+            if g in variable[col]:
+                l.append(1)
+            else:
+                l.append(0)
+        total = sum(l) if sum(l) != 0 else 1
+        return [x/math.sqrt(total) for x in l]
+    
+    variable['Genre'] = [dummies_normalized('Genre',list_genre)]
+    variable['Producer'] = [dummies_normalized('Producer',list_producer)]
+    variable['Studio'] = [dummies_normalized('Studio',list_studio)]
+    variable['Type'] = [dummies_normalized('Type',list_type)]
+    
+    r = pd.DataFrame(variable)
+
+    r['Title'] = sbert.encode(r['Title'].values , show_progress_bar =True).tolist()  
+    r['Synopsis'] = sbert.encode(r['Synopsis'].values , show_progress_bar =True).tolist()
+
+    t = pd.DataFrame(r['Title'].tolist())
+    g = pd.DataFrame(r['Genre'].tolist()) 
+    syn = pd.DataFrame(r['Synopsis'].tolist())
+    ty = pd.DataFrame(r['Type'].tolist())  
+    p = pd.DataFrame(r['Producer'].tolist())
+    s = pd.DataFrame(r['Studio'].tolist())
+
+    print("HEEEEERE")
+    for i in r.iloc[0]:
+        print(len(i))
+
+
+    df_pred = pd.concat([t,g,syn,ty,p,s], axis=1)
+    r = df_pred.iloc[0].values
+
+    return r
 
 
 def requests_api(variable):
     URL = 'http://127.0.0.1:5000/predict_rating'
-    rating = requests.post(URL, json.dumps(variable))
-    print("Prediction = " + str({rating.text}))
+    rating = requests.post(URL, json.dumps(variable.tolist()))
+    print("Prediction = " + rating.text)
     #rating = random.randint(20, 80)
-    return rating
+    return rating.text
 
 
 def page_predict():
     df = pd.read_csv("../data/Anime_data.csv")
 
-    with open("../data/list_genre", "r") as fp:
-        list_genre = json.load(fp)
-
-    with open("../data/list_type", "r") as fp:
-        list_type = json.load(fp)
-
-    with open("../data/list_producer", "r") as fp:
-        list_producer = json.load(fp)
-
-    with open("../data/list_studio", "r") as fp:
-        list_studio = json.load(fp)
 
     with open("../data/site_to_api", "r") as fp:
         site_to_api = json.load(fp)
@@ -53,9 +95,6 @@ def page_predict():
             predict_Studio = st.multiselect(label="predict_studio", options=list_studio)
         predict_Description = st.text_area(label="predict_Description")
 
-    variable = {"Title": predict_title, "Genre": predict_Genre, "Description": predict_Description, "Type": predict_type, "producer": predict_producer,
-                "Studio": predict_Studio}
-
     #with st.spinner('Wait for it...'):
     #   time.sleep(2)
     #   rating_predict = requests_api(variable)
@@ -66,17 +105,27 @@ def page_predict():
     #st.write(variable)
     #st.write(site_to_api)
 
-    list_api = [0] * len(site_to_api)
+    # list_api = [0] * len(site_to_api)
 
-    for key, value  in variable.items():
-        #st.write(value)
-        for i in value:
-            if i in site_to_api:
-                st.write(i)
-                st.write(site_to_api.index(i))
-                list_api[site_to_api.index(i)] = 1
+    # for key, value  in variable.items():
+    #     #st.write(value)
+    #     for i in value:
+    #         if i in site_to_api:
+    #             st.write(i)
+    #             st.write(site_to_api.index(i))
+    #             list_api[site_to_api.index(i)] = 1
 
-    rating_predict = requests_api(list_api)
+    # rating_predict = requests_api(list_api)
+
+    #GETTING THE ROW TO PREDICT AND MAKING IT INTO THE BEST FORMAT FOR THE MODEL
+
+    variable = {"Title": [predict_title], "Genre": [predict_Genre], "Synopsis": [predict_Description], "Type": [predict_type], "Producer": [predict_producer],"Studio": [predict_Studio]}
+
+    row_to_predict = preprocess(variable)
+    print(row_to_predict)
+    print(len(row_to_predict))
+    rating_predict = requests_api(row_to_predict)
+    st.write(rating_predict)
 
 
 
