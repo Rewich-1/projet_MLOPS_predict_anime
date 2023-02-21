@@ -10,7 +10,7 @@ import requests
 
 
 def requests_api(variable):
-    URL = 'http://127.0.0.1:5000/predict_rating'
+    URL = 'http://back:5000/predict_rating'
     rating = requests.post(URL, json.dumps(variable))
     print("Prediction = " + str({rating.text}))
     #rating = random.randint(20, 80)
@@ -120,10 +120,6 @@ def page_predict():
     with col3:
        st.markdown("<h1 style='text-align: center'>💯</h1>", unsafe_allow_html=True)
 
-<<<<<<< HEAD
-
-    st.dataframe(df)
-=======
     #my_bar = st.progress(50)
 
     #time.sleep(1)
@@ -168,4 +164,3 @@ def page_predict():
 
 
     #st.dataframe(df)
->>>>>>> 39cfc199f971f435c468ee9a0d71bc841ee2084b
