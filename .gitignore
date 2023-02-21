@@ -2,3 +2,4 @@ back/models/*.h5
 back/__pycache__
 front/__pycache__
 front/.idea
+front/__pycache__
