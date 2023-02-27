@@ -9,3 +9,13 @@ Go to /front and run the following commands :
 
 Go to the root of this repo and run the following commands :
     - docker-compose up
+
+Go to http://localhost:8501/ to see the app
+
+
+If you want to run the grafana dashboard :
+    - Go to grafana/dockprom and run the following commands :
+        - docker-compose up -d
+    - Go to http://localhost:3000/ and use the following credentials :
+        - login : admin
+        - password : admin
