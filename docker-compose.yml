@@ -8,3 +8,7 @@ services:
       PATH_TO_MODELS: C:/Users/Glueg/Documents/GitHub/projet_MLOPS_predict_anime/back/models
     ports:
       - "5000:5000"
+  front:
+    image: front_end
+    ports:
+      - "8501:8501"
