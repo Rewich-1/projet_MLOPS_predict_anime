@@ -11,15 +11,15 @@ import math
 from sentence_transformers import SentenceTransformer
 sbert = SentenceTransformer ('distilbert-base-nli-mean-tokens')
 
-with open("../data/list_genre", "r") as fp:
+with open("./data/list_genre", "r") as fp:
     list_genre = json.load(fp)
-with open("../data/list_type", "r") as fp:
+with open("./data/list_type", "r") as fp:
     list_type = json.load(fp)
 
-with open("../data/list_producer", "r") as fp:
+with open("./data/list_producer", "r") as fp:
     list_producer = json.load(fp)
 
-with open("../data/list_studio", "r") as fp:
+with open("./data/list_studio", "r") as fp:
     list_studio = json.load(fp)
 
 def preprocess(variable):
