@@ -68,6 +68,10 @@ def page_predict():
 
     list_api = [0] * len(site_to_api)
 
+    print("------------------")
+    print(len(site_to_api))
+    print("------------------")
+
     for key, value  in variable.items():
         #st.write(value)
         for i in value:
