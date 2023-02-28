@@ -92,18 +92,17 @@ def page_predict():
 
 
     st.header('predict rating of your anime')
-    with st.expander("search"):
-        predict_title = st.text_input(value="", label="predict_Title")
-        col1, col2, col3, col4 = st.columns(4)
-        with col1:
-            predict_Genre = st.multiselect(label="predict_Genre", options=list_genre)
-        with col2:
-            predict_type = st.selectbox(label="predict_Type", options=list_type)
-        with col3:
-            predict_producer = st.multiselect(label="predict_producer", options=list_producer)
-        with col4:
-            predict_Studio = st.multiselect(label="predict_studio", options=list_studio)
-        predict_Description = st.text_area(label="predict_Description")
+    predict_title = st.text_input(value="", label="predict_Title")
+    col1, col2, col3, col4 = st.columns(4)
+    with col1:
+        predict_Genre = st.multiselect(key='AAAAAA' ,label="predict_Genre", options=list_genre)
+    with col2:
+        predict_type = st.selectbox(label="predict_Type", options=list_type)
+    with col3:
+        predict_producer = st.multiselect(label="predict_producer", options=list_producer)
+    with col4:
+        predict_Studio = st.multiselect(label="predict_studio", options=list_studio)
+    predict_Description = st.text_area(label="predict_Description")
 
     #with st.spinner('Wait for it...'):
     #   time.sleep(2)
@@ -138,51 +137,32 @@ def page_predict():
     rating_predict = requests_api(row_to_predict)
     #st.write(rating_predict)
 
-    if rating_predict == 0:
-        st.error('api not work', icon="🚨")
-    else:
-
-        st.header('result')
-
-        my_bar = st.progress(1)
-
-        time.sleep(1)
-        my_bar.progress(0.8)
-
-        time.sleep(1)
-        my_bar.progress(0.2)
-
-        time.sleep(1)
-        my_bar.progress(rating_predict/10)
-
-        color = {
-           "red": 0,
-           "green": 0,
-            "blue": 60,
-        }
-
-        if rating_predict < 50:
-            color["red"] = 255 - int(rating_predict * 2)
-            color["green"] = int(255-50+rating_predict * 2)
+    _, _, butcol , _, _ = st.columns(5)
+    if butcol.button('Predict !'):
+        if rating_predict == 0:
+            st.error('api not work', icon="🚨")
         else:
-           color["red"] = 255 - int(rating_predict * 2.55)
-           color["green"] = int(rating_predict * 2.55)
 
-        st.markdown("""
-                  <style>
-                  .stProgress .st-ep {
-                     background-color: rgb("""+str(color['red'])+""", """+str(color['green'])+""", """+str(color['blue'])+""")
-                 }
-                 </style>
-                """, unsafe_allow_html=True)
+            st.header('result')
 
-        col1, col2, col3 = st.columns(3)
+            my_bar = st.progress(1)
 
-        st.balloons()
-        with col1:
-            st.markdown("<h1 style='text-align: center'>💯</h1>", unsafe_allow_html=True)
-        with col2:
-           st.header('your anime has a rating of:\n')
-           st.title(str(round(rating_predict,2)) + "/10")
-        with col3:
-           st.markdown("<h1 style='text-align: center'>💯</h1>", unsafe_allow_html=True)
+            time.sleep(1)
+            my_bar.progress(0.8)
+
+            time.sleep(1)
+            my_bar.progress(0.2)
+
+            time.sleep(1)
+            my_bar.progress(rating_predict/10)
+
+            col1, col2, col3 = st.columns(3)
+
+            st.balloons()
+            with col1:
+                st.markdown("<h1 style='text-align: center'>💯</h1>", unsafe_allow_html=True)
+            with col2:
+                st.header('your anime has a rating of:\n')
+                st.title(str(round(rating_predict,2)) + "/10")
+            with col3:
+                st.markdown("<h1 style='text-align: center'>💯</h1>", unsafe_allow_html=True)
