@@ -14,7 +14,7 @@ pipeline {
         }
         stage('Testing the back end') {
             when {
-                branch 'back'
+                branch 'back_work'
             }
             steps {
                 bat 'cd back & conda activate jenkins & pip install -r requirements.txt & python -m unittest'
