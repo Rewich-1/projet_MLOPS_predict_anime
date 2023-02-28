@@ -38,10 +38,7 @@ pipeline {
                 branch 'release'
             }
             steps {
-                input {
-                    message "Does the release candidate look good?",
-                    ok "Yes, release it!"
-                }
+                input("Does the release candidate look good?")
                 // Deploy to production if user accepts
                 bat "echo 'Deploying'" // To be replaced with the actual test
             }
