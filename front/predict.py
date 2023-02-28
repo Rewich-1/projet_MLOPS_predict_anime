@@ -165,18 +165,10 @@ def page_predict():
             color["red"] = 255 - int(rating_predict * 2)
             color["green"] = int(255-50+rating_predict * 2)
         else:
-           color["red"] = 255 - int(rating_predict * 2.55)
-           color["green"] = int(rating_predict * 2.55)
 
-        st.markdown("""
-                  <style>
-                  .stProgress .st-ep {
-                     background-color: rgb("""+str(color['red'])+""", """+str(color['green'])+""", """+str(color['blue'])+""")
-                 }
-                 </style>
-                """, unsafe_allow_html=True)
+            st.header('result')
 
-        col1, col2, col3 = st.columns(3)
+            my_bar = st.progress(1)
 
         st.balloons()
         with col1:
