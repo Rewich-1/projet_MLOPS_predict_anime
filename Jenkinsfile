@@ -9,8 +9,7 @@ pipeline {
                 branch 'front'
             }
             steps {
-                // Run stress 
-                // To be done with Selenium for example
+                bat "echo 'Testing the front end'" // To be replaced with the actual test
             }
         }
         stage('Testing the back end') {
@@ -29,6 +28,7 @@ pipeline {
             }
             steps {
                 bat 'conda activate jenkins & pip install -r requirements.txt & python -m unittest'
+                bat "echo 'Testing the front end'" // To be replaced with the actual test
             }
         }
 
@@ -43,6 +43,7 @@ pipeline {
                     ok "Yes, release it!"
                 }
                 // Deploy to production if user accepts
+                bat "echo 'Deploying'" // To be replaced with the actual test
             }
         }
         // on merging with main, push to Dockerhub.
@@ -52,6 +53,7 @@ pipeline {
             }
             steps {
                 // Push to Dockerhub
+                bat "echo 'Pushing to dockerhub'" // To be replaced with the actual test
             }
         }
     }
