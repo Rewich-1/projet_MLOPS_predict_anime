@@ -39,7 +39,7 @@ pipeline {
             }
             steps {
                 input {
-                    message "Does the release candidate look good?"
+                    message "Does the release candidate look good?",
                     ok "Yes, release it!"
                 }
                 // Deploy to production if user accepts
