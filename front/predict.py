@@ -51,25 +51,18 @@ def preprocess(variable):
     p = pd.DataFrame(r['Producer'].tolist())
     s = pd.DataFrame(r['Studio'].tolist())
 
-    print("HEEEEERE")
-    for i in r.iloc[0]:
-        print(len(i))
-
 
     df_pred = pd.concat([t,g,syn,ty,p,s], axis=1)
-    r = df_pred.iloc[0].values
+    r = df_pred.iloc[0].values.tolist()
 
     return r
 
 
 def requests_api(variable):
-    try :
-        URL = 'http://back:5000/predict_rating'
-        rating = requests.post(URL, json.dumps(variable))
-        print("Prediction = " + str({rating.text}))
-        rating = float(rating.text)
-    except:
-        rating = 0
+    URL = 'http://back:5000/predict_rating'
+    rating = requests.post(URL, json.dumps(variable))
+    print("Prediction = " + str({rating.text}))
+    rating = float(rating.text[1:-1])
     return rating
 
 
@@ -105,7 +98,7 @@ def page_predict():
         with col1:
             predict_Genre = st.multiselect(label="predict_Genre", options=list_genre)
         with col2:
-            predict_type = st.multiselect(label="predict_Type", options=list_type)
+            predict_type = st.selectbox(label="predict_Type", options=list_type)
         with col3:
             predict_producer = st.multiselect(label="predict_producer", options=list_producer)
         with col4:
@@ -117,7 +110,7 @@ def page_predict():
     #   rating_predict = requests_api(variable)
 
 
-    st.header('result')
+    #st.header('result')
 
     #st.write(variable)
     #st.write(site_to_api)
@@ -139,10 +132,11 @@ def page_predict():
     variable = {"Title": [predict_title], "Genre": [predict_Genre], "Synopsis": [predict_Description], "Type": [predict_type], "Producer": [predict_producer],"Studio": [predict_Studio]}
 
     row_to_predict = preprocess(variable)
+    #print(row_to_predict)
+    #print(len(row_to_predict))
     print(row_to_predict)
-    print(len(row_to_predict))
     rating_predict = requests_api(row_to_predict)
-    st.write(rating_predict)
+    #st.write(rating_predict)
 
     if rating_predict == 0:
         st.error('api not work', icon="🚨")
@@ -150,16 +144,16 @@ def page_predict():
 
         st.header('result')
 
-        my_bar = st.progress(50)
+        my_bar = st.progress(1)
 
         time.sleep(1)
-        my_bar.progress(rating_predict+20)
+        my_bar.progress(0.8)
 
         time.sleep(1)
-        my_bar.progress(rating_predict - 20)
+        my_bar.progress(0.2)
 
         time.sleep(1)
-        my_bar.progress(rating_predict)
+        my_bar.progress(rating_predict/10)
 
         color = {
            "red": 0,
@@ -188,6 +182,7 @@ def page_predict():
         with col1:
             st.markdown("<h1 style='text-align: center'>💯</h1>", unsafe_allow_html=True)
         with col2:
-           st.header('your anime have rating of  :'+ str(rating_predict/10))
+           st.header('your anime has a rating of:\n')
+           st.title(rating_predict)
         with col3:
            st.markdown("<h1 style='text-align: center'>💯</h1>", unsafe_allow_html=True)

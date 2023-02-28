@@ -2,3 +2,4 @@ streamlit
 numpy
 pandas
 streamlit_cookies_manager
+sentence_transformers
