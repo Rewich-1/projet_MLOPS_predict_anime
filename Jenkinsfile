@@ -40,7 +40,9 @@ pipeline {
             steps {
                 input("Does the release candidate look good?")
                 // Deploy to production if user accepts
-                bat "echo 'Deploying'" // To be replaced with the actual test
+                bat 'docker build -t front_end -f front/Dockerfile front'
+                bat 'docker build -t back_end -f back/Dockerfile back'
+                bat 'docker-compose up -d'
             }
         }
         // on merging with main, push to Dockerhub.
