@@ -50,7 +50,16 @@ pipeline {
             }
             steps {
                 // Push to Dockerhub
-                bat "echo 'Pushing to dockerhub'" // To be replaced with the actual test
+                withCredentials([usernamePassword(credentialsId: 'docker-cred', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
+                    bat 'docker login -u %USERNAME% -p %PASSWORD%'
+                }
+                bat 'docker build -t front_end -f front/Dockerfile front'
+                bat 'docker tag front_end luccaanthoine/anime_front_end:1'
+                bat 'docker push luccaanthoine/anime_front_end:1'
+                
+                bat 'docker build -t back_end -f back/Dockerfile back'
+                bat 'docker tag back_end luccaanthoine/anime_back_end:1'
+                bat 'docker push luccaanthoine/anime_back_end:1'
             }
         }
     }
